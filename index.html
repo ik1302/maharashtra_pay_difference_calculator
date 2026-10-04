@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maharashtra Pay Difference Calculator</title>
+<style>
+  :root{--primary:#1d4ed8;--bg:#f4f7fb;--card:#fff;--border:#dbe3ef;--text:#172033;--muted:#64748b;--good:#047857}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+  .container{max-width:1450px;margin:auto;padding:22px}
+  header{background:linear-gradient(135deg,#173b8f,#2563eb);color:white;border-radius:16px;padding:24px;margin-bottom:18px}
+  header h1{margin:0 0 6px;font-size:27px}
+  header p{margin:0;opacity:.9}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:18px;box-shadow:0 3px 12px rgba(15,23,42,.04)}
+  h2{font-size:18px;margin:0 0 14px}
+  .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+  label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}
+  input,select{width:100%;padding:10px 11px;border:1px solid #cbd5e1;border-radius:9px;font-size:14px;background:#fff}
+  input:focus,select:focus{outline:2px solid #bfdbfe;border-color:#2563eb}
+  .hint{font-size:11px;color:var(--muted);margin-top:4px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+  button{border:0;border-radius:9px;padding:11px 16px;font-weight:700;cursor:pointer}
+  .primary{background:var(--primary);color:white}.secondary{background:#e2e8f0;color:#172033}.green{background:#059669;color:white}
+  .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px}
+  table{border-collapse:collapse;width:100%;min-width:1250px;font-size:12px}
+  th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:right;white-space:nowrap}
+  th{background:#eef4ff;color:#1e3a8a;text-align:center;position:sticky;top:0}
+  td:first-child,th:first-child{text-align:left}
+  tr.total{font-weight:800;background:#f8fafc}
+  .section-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .summary{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:15px}
+  .metric{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px}
+  .metric span{display:block;color:var(--muted);font-size:11px}.metric strong{display:block;font-size:18px;margin-top:4px;color:var(--good)}
+  .warning{padding:12px;border-radius:9px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:13px;margin-bottom:12px}
+  @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.container{padding:10px}.grid{grid-template-columns:1fr}.summary{grid-template-columns:1fr}header h1{font-size:22px}}
+  @media print{
+    body{background:white}.container{max-width:none;padding:0}header,.actions,.no-print{display:none!important}
+    .card{box-shadow:none;border:0;padding:5px;margin-bottom:10px}.table-wrap{overflow:visible;border:0}
+    table{font-size:9px;min-width:0}.metric{padding:6px}.metric strong{font-size:12px}
+    @page{size:A4 landscape;margin:8mm}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>🏛️ Maharashtra Pay Difference Calculator</h1>
+  <p>7th Pay Commission • Month-wise DUE / DRAWN Difference Statement</p>
+</header>
+
+<div class="card">
+  <h2>Employee & Calculation Details</h2>
+  <div class="grid">
+    <div><label>Employee Name</label><input id="employeeName" placeholder="Enter employee name"></div>
+    <div><label>Designation</label><input id="designation" placeholder="Enter designation"></div>
+    <div><label>Joining Date</label><input id="joiningDate" type="date"></div>
+    <div><label>Benefit Effective Date</label><input id="effectiveDate" type="date"></div>
+    <div><label>Benefit Implementation / Drawn Date</label><input id="implementationDate" type="date"></div>
+    <div><label>Old Pay Level</label><select id="oldLevel">
+      <option value="S-1">S-1</option>
+      <option value="S-2">S-2</option>
+      <option value="S-3">S-3</option>
+      <option value="S-4">S-4</option>
+      <option value="S-5">S-5</option>
+      <option value="S-6" selected>S-6</option>
+      <option value="S-7">S-7</option>
+      <option value="S-8">S-8</option>
+      <option value="S-9">S-9</option>
+      <option value="S-10">S-10</option>
+      <option value="S-11">S-11</option>
+      <option value="S-12">S-12</option>
+      <option value="S-13">S-13</option>
+      <option value="S-14">S-14</option>
+      <option value="S-15">S-15</option>
+      <option value="S-16">S-16</option>
+      <option value="S-17">S-17</option>
+      <option value="S-18">S-18</option>
+      <option value="S-19">S-19</option>
+      <option value="S-20">S-20</option>
+      <option value="S-21">S-21</option>
+      <option value="S-22">S-22</option>
+      <option value="S-23">S-23</option>
+      <option value="S-24">S-24</option>
+      <option value="S-25">S-25</option>
+      <option value="S-26">S-26</option>
+      <option value="S-27">S-27</option>
+      <option value="S-28">S-28</option>
+      <option value="S-29">S-29</option>
+      <option value="S-30">S-30</option>
+      <option value="S-31">S-31</option>
+    </select></div>
+    <div><label>New Pay Level</label><select id="newLevel">
+      <option value="S-1">S-1</option>
+      <option value="S-2">S-2</option>
+      <option value="S-3">S-3</option>
+      <option value="S-4">S-4</option>
+      <option value="S-5">S-5</option>
+      <option value="S-6">S-6</option>
+      <option value="S-7" selected>S-7</option>
+      <option value="S-8">S-8</option>
+      <option value="S-9">S-9</option>
+      <option value="S-10">S-10</option>
+      <option value="S-11">S-11</option>
+      <option value="S-12">S-12</option>
+      <option value="S-13">S-13</option>
+      <option value="S-14">S-14</option>
+      <option value="S-15">S-15</option>
+      <option value="S-16">S-16</option>
+      <option value="S-17">S-17</option>
+      <option value="S-18">S-18</option>
+      <option value="S-19">S-19</option>
+      <option value="S-20">S-20</option>
+      <option value="S-21">S-21</option>
+      <option value="S-22">S-22</option>
+      <option value="S-23">S-23</option>
+      <option value="S-24">S-24</option>
+      <option value="S-25">S-25</option>
+      <option value="S-26">S-26</option>
+      <option value="S-27">S-27</option>
+      <option value="S-28">S-28</option>
+      <option value="S-29">S-29</option>
+      <option value="S-30">S-30</option>
+      <option value="S-31">S-31</option>
+    </select></div>
+    <div>
+      <label>Old Basic — Cell / SL Selection</label>
+      <select id="oldCell">
+        <option value="">Select Cell / SL</option>
+        <option value="0">SL 1 — ₹19,900</option>
+        <option value="1">SL 2 — ₹20,500</option>
+        <option value="2">SL 3 — ₹21,100</option>
+        <option value="3" selected>SL 4 — ₹21,700</option>
+        <option value="4">SL 5 — ₹22,400</option>
+        <option value="5">SL 6 — ₹23,100</option>
+        <option value="6">SL 7 — ₹23,800</option>
+        <option value="7">SL 8 — ₹24,500</option>
+        <option value="8">SL 9 — ₹25,200</option>
+        <option value="9">SL 10 — ₹26,000</option>
+        <option value="10">SL 11 — ₹26,800</option>
+        <option value="11">SL 12 — ₹27,600</option>
+        <option value="12">SL 13 — ₹28,400</option>
+        <option value="13">SL 14 — ₹29,300</option>
+        <option value="14">SL 15 — ₹30,200</option>
+        <option value="15">SL 16 — ₹31,100</option>
+        <option value="16">SL 17 — ₹32,000</option>
+        <option value="17">SL 18 — ₹33,000</option>
+        <option value="18">SL 19 — ₹34,000</option>
+        <option value="19">SL 20 — ₹35,000</option>
+        <option value="20">SL 21 — ₹36,100</option>
+        <option value="21">SL 22 — ₹37,200</option>
+        <option value="22">SL 23 — ₹38,300</option>
+        <option value="23">SL 24 — ₹39,400</option>
+        <option value="24">SL 25 — ₹40,600</option>
+        <option value="25">SL 26 — ₹41,800</option>
+        <option value="26">SL 27 — ₹43,100</option>
+        <option value="27">SL 28 — ₹44,400</option>
+        <option value="28">SL 29 — ₹45,700</option>
+        <option value="29">SL 30 — ₹47,100</option>
+        <option value="30">SL 31 — ₹48,500</option>
+        <option value="31">SL 32 — ₹50,000</option>
+        <option value="32">SL 33 — ₹51,500</option>
+        <option value="33">SL 34 — ₹53,000</option>
+        <option value="34">SL 35 — ₹54,600</option>
+        <option value="35">SL 36 — ₹56,200</option>
+        <option value="36">SL 37 — ₹57,900</option>
+        <option value="37">SL 38 — ₹59,600</option>
+        <option value="38">SL 39 — ₹61,400</option>
+        <option value="39">SL 40 — ₹63,200</option>
+      </select>
+      <div class="hint">Select only the SL/Cell. Basic Pay will appear automatically as per the selected Pay Level.</div>
+    </div>
+    <div>
+      <label>Old Basic Pay</label>
+      <input id="basicPay" type="number" min="0" step="1" value="21700" placeholder="Select Old Cell / SL" readonly>
+      <div class="hint">Automatic — manual entry is not allowed.</div>
+    </div>
+    <div><label>New Basic on Benefit Date</label><input id="newBasicPreview" type="number" readonly placeholder="Auto after Old Level + 1 increment"></div>
+    <div><label>Increment Month</label>
+      <select id="incrementMonth"><option value="1">January</option><option value="7" selected>July</option></select>
+      <div class="hint">Prototype: increment amount is calculated from the selected Pay Matrix level.</div>
+    </div>
+    <div><label>TA (Editable)</label><input id="ta" type="number" min="0" step="1" value="1350"></div>
+    <div><label>DA Rate</label><input value="Automatic — Maharashtra Government DA Master" readonly></div>
+    <div><label>Default HRA %</label><input id="hraRate" type="number" min="0" step="0.01" value="10"></div>
+  </div>
+  <div class="warning no-print">
+    Pay Matrix cells S-1 to S-31 are taken from the uploaded Maharashtra Government Pay Scale PDF, Annexure-II. DA is calculated automatically from the date-wise Maharashtra Government DA Master.
+  </div>
+  <div class="actions">
+    <button class="primary" onclick="calculate()">Calculate Difference</button>
+    <button class="green" onclick="window.print()">Print / Save PDF</button>
+    <button class="secondary" onclick="resetForm()">Reset</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-head">
+    <h2>Month-wise DUE / DRAWN / DIFFERENCE Statement</h2>
+    <strong id="periodLabel">—</strong>
+  </div>
+  <div class="summary">
+    <div class="metric"><span>Basic Difference</span><strong id="sumBasic">₹0</strong></div>
+    <div class="metric"><span>DA Difference</span><strong id="sumDA">₹0</strong></div>
+    <div class="metric"><span>HRA Difference</span><strong id="sumHRA">₹0</strong></div>
+    <div class="metric"><span>TA Difference</span><strong id="sumTA">₹0</strong></div>
+    <div class="metric"><span>Total Difference</span><strong id="sumTotal">₹0</strong></div>
+  </div>
+  <div class="table-wrap">
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th rowspan="2">Month</th>
+          <th colspan="5">DUE</th>
+          <th colspan="5">DRAWN</th>
+          <th colspan="5">DIFFERENCE</th>
+        </tr>
+        <tr>
+          <th>Basic</th><th>DA</th><th>HRA</th><th>TA</th><th>Total</th>
+          <th>Basic</th><th>DA</th><th>HRA</th><th>TA</th><th>Total</th>
+          <th>Basic</th><th>DA</th><th>HRA</th><th>TA</th><th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="resultBody">
+        <tr><td colspan="16" style="text-align:center;padding:25px;color:#64748b">Enter dates and click Calculate Difference.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card no-print">
+  <h2>DA Master — Maharashtra Government</h2>
+  <p style="color:#64748b;font-size:13px">
+    This is the date-wise DA master used by the calculator. DA for each arrear month is picked automatically according to the effective date.
+  </p>
+  <div class="table-wrap">
+    <table style="min-width:500px">
+      <thead><tr><th>Effective From</th><th>DA %</th><th>Note</th></tr></thead>
+      <tbody id="daMasterBody"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<script>
+/*
+  FIRST WORKING PROTOTYPE
+  -----------------------
+  Pay Matrix source: uploaded Maharashtra Government Pay Scale PDF, Annexure-II.
+  DA is automatically selected month-wise from the master table.
+*/
+
+// Sample cells sufficient to test the UI. Values should be replaced with the complete verified matrix.
+const payMatrix = {"S-1":[15000,15500,16000,16500,17000,17500,18000,18500,19100,19700,20300,20900,21500,22100,22800,23500,24200,24900,25600,26400,27200,28000,28800,29700,30600,31500,32400,33400,34400,35400,36500,37600,38700,39900,41100,42300,43600,44900,46200,47600],"S-2":[15300,15800,16300,16800,17300,17800,18300,18800,19400,20000,20600,21200,21800,22500,23200,23900,24600,25300,26100,26900,27700,28500,29400,30300,31200,32100,33100,34100,35100,36200,37300,38400,39600,40800,42000,43300,44600,45900,47300,48700],"S-3":[16600,17100,17600,18100,18600,19200,19800,20400,21000,21600,22200,22900,23600,24300,25000,25800,26600,27400,28200,29000,29900,30800,31700,32700,33700,34700,35700,36800,37900,39000,40200,41400,42600,43900,45200,46600,48000,49400,50900,52400],"S-4":[17100,17600,18100,18600,19200,19800,20400,21000,21600,22200,22900,23600,24300,25000,25800,26600,27400,28200,29000,29900,30800,31700,32700,33700,34700,35700,36800,37900,39000,40200,41400,42600,43900,45200,46600,48000,49400,50900,52400,54000],"S-5":[18000,18500,19100,19700,20300,20900,21500,22100,22800,23500,24200,24900,25600,26400,27200,28000,28800,29700,30600,31500,32400,33400,34400,35400,36500,37600,38700,39900,41100,42300,43600,44900,46200,47600,49000,50500,52000,53600,55200,56900],"S-6":[19900,20500,21100,21700,22400,23100,23800,24500,25200,26000,26800,27600,28400,29300,30200,31100,32000,33000,34000,35000,36100,37200,38300,39400,40600,41800,43100,44400,45700,47100,48500,50000,51500,53000,54600,56200,57900,59600,61400,63200],"S-7":[21700,22400,23100,23800,24500,25200,26000,26800,27600,28400,29300,30200,31100,32000,33000,34000,35000,36100,37200,38300,39400,40600,41800,43100,44400,45700,47100,48500,50000,51500,53000,54600,56200,57900,59600,61400,63200,65100,67100,69100],"S-8":[25500,26300,27100,27900,28700,29600,30500,31400,32300,33300,34300,35300,36400,37500,38600,39800,41000,42200,43500,44800,46100,47500,48900,50400,51900,53500,55100,56800,58500,60300,62100,64000,65900,67900,69900,72000,74200,76400,78700,81100],"S-9":[26400,27200,28000,28800,29700,30600,31500,32400,33400,34400,35400,36500,37600,38700,39900,41100,42300,43600,44900,46200,47600,49000,50500,52000,53600,55200,56900,58600,60400,62200,64100,66000,68000,70000,72100,74300,76500,78800,81200,83600],"S-10":[29200,30100,31000,31900,32900,33900,34900,35900,37000,38100,39200,40400,41600,42800,44100,45400,46800,48200,49600,51100,52600,54200,55800,57500,59200,61000,62800,64700,66600,68600,70700,72800,75000,77300,79600,82000,84500,87000,89600,92300],"S-11":[30100,31000,31900,32900,33900,34900,35900,37000,38100,39200,40400,41600,42800,44100,45400,46800,48200,49600,51100,52600,54200,55800,57500,59200,61000,62800,64700,66600,68600,70700,72800,75000,77300,79600,82000,84500,87000,89600,92300,95100],"S-12":[32000,33000,34000,35000,36100,37200,38300,39400,40600,41800,43100,44400,45700,47100,48500,50000,51500,53000,54600,56200,57900,59600,61400,63200,65100,67100,69100,71200,73300,75500,77800,80100,82500,85000,87600,90200,92900,95700,98600,101600],"S-13":[35400,36500,37600,38700,39900,41100,42300,43600,44900,46200,47600,49000,50500,52000,53600,55200,56900,58600,60400,62200,64100,66000,68000,70000,72100,74300,76500,78800,81200,83600,86100,88700,91400,94100,96900,99800,102800,105900,109100,112400],"S-14":[38600,39800,41000,42200,43500,44800,46100,47500,48900,50400,51900,53500,55100,56800,58500,60300,62100,64000,65900,67900,69900,72000,74200,76400,78700,81100,83500,86000,88600,91300,94000,96800,99700,102700,105800,109000,112300,115700,119200,122800],"S-15":[41800,43100,44400,45700,47100,48500,50000,51500,53000,54600,56200,57900,59600,61400,63200,65100,67100,69100,71200,73300,75500,77800,80100,82500,85000,87600,90200,92900,95700,98600,101600,104600,107700,110900,114200,117600,121100,124700,128400,132300],"S-16":[44900,46200,47600,49000,50500,52000,53600,55200,56900,58600,60400,62200,64100,66000,68000,70000,72100,74300,76500,78800,81200,83600,86100,88700,91400,94100,96900,99800,102800,105900,109100,112400,115800,119300,122900,126600,130400,134300,138300,142400],"S-17":[47600,49000,50500,52000,53600,55200,56900,58600,60400,62200,64100,66000,68000,70000,72100,74300,76500,78800,81200,83600,86100,88700,91400,94100,96900,99800,102800,105900,109100,112400,115800,119300,122900,126600,130400,134300,138300,142400,146700,151100],"S-18":[49100,50600,52100,53700,55300,57000,58700,60500,62300,64200,66100,68100,70100,72200,74400,76600,78900,81300,83700,86200,88800,91500,94200,97000,99900,102900,106000,109200,112500,115900,119400,123000,126700,130500,134400,138400,142600,146900,151300,155800],"S-19":[55100,56800,58500,60300,62100,64000,65900,67900,69900,72000,74200,76400,78700,81100,83500,86000,88600,91300,94000,96800,99700,102700,105800,109000,112300,115700,119200,122800,126500,130300,134200,138200,142300,146600,151000,155500,160200,165000,170000,175100],"S-20":[56100,57800,59500,61300,63100,65000,67000,69000,71100,73200,75400,77700,80000,82400,84900,87400,90000,92700,95500,98400,101400,104400,107500,110700,114000,117400,120900,124500,128200,132000,136000,140100,144300,148600,153100,157700,162400,167300,172300,177500],"S-21":[57100,58800,60600,62400,64300,66200,68200,70200,72300,74500,76700,79000,81400,83800,86300,88900,91600,94300,97100,100000,103000,106100,109300,112600,116000,119500,123100,126800,130600,134500,138500,142700,147000,151400,155900,160600,165400,170400,175500,180800],"S-22":[60000,61800,63700,65600,67600,69600,71700,73900,76100,78400,80800,83200,85700,88300,90900,93600,96400,99300,102300,105400,108600,111900,115300,118800,122400,126100,129900,133800,137800,141900,146200,150600,155100,159800,164600,169500,174600,179800,185200,190800],"S-23":[67700,69700,71800,74000,76200,78500,80900,83300,85800,88400,91100,93800,96600,99500,102500,105600,108800,112100,115500,119000,122600,126300,130100,134000,138000,142100,146400,150800,155300,160000,164800,169700,174800,180000,185400,191000,196700,202600,208700],"S-24":[71100,73200,75400,77700,80000,82400,84900,87400,90000,92700,95500,98400,101400,104400,107500,110700,114000,117400,120900,124500,128200,132000,136000,140100,144300,148600,153100,157700,162400,167300,172300,177500,182800,188300,193900,199700,205700,211900],"S-25":[78800,81200,83600,86100,88700,91400,94100,96900,99800,102800,105900,109100,112400,115800,119300,122900,126600,130400,134300,138300,142400,146700,151100,155600,160300,165100,170100,175200,180500,185900,191500,197200,203100,209200],"S-26":[82200,84700,87200,89800,92500,95300,98200,101100,104100,107200,110400,113700,117100,120600,124200,127900,131700,135700,139800,144000,148300,152700,157300,162000,166900,171900,177100,182400,187900,193500,199300,205300,211500],"S-27":[118500,122100,125800,129600,133500,137500,141600,145800,150200,154700,159300,164100,169000,174100,179300,184700,190200,195900,201800,207900,214100],"S-28":[124800,128500,132400,136400,140500,144700,149000,153500,158100,162800,167700,172700,177900,183200,188700,194400,200200,206200,212400],"S-29":[131100,135000,139100,143300,147600,152000,156600,161300,166100,171100,176200,181500,186900,192500,198300,204200,210300,216600],"S-30":[144200,148500,153000,157600,162300,167200,172200,177400,182700,188200,193800,199600,205600,211800,218200],"S-31":[182200,187700,193300,199100,205100,211300,217600,220000]};
+
+// DEMO only. Replace with verified Maharashtra DA timeline.
+const daMaster = [
+  {from:"2016-01-01", rate:0, note:"Effective from 01.01.2016"},
+  {from:"2016-07-01", rate:2, note:"Effective from 01.07.2016"},
+  {from:"2017-01-01", rate:4, note:"Effective from 01.01.2017"},
+  {from:"2017-07-01", rate:5, note:"Effective from 01.07.2017"},
+  {from:"2018-01-01", rate:7, note:"Effective from 01.01.2018"},
+  {from:"2018-07-01", rate:9, note:"Effective from 01.07.2018"},
+  {from:"2019-01-01", rate:12, note:"Effective from 01.01.2019"},
+  {from:"2019-07-01", rate:17, note:"Effective from 01.07.2019"},
+  {from:"2020-01-01", rate:17, note:"DA retained at 17%"},
+  {from:"2020-07-01", rate:17, note:"COVID period freeze"},
+  {from:"2021-01-01", rate:17, note:"DA retained at 17%"},
+  {from:"2021-07-01", rate:28, note:"Effective from 01.07.2021"},
+  {from:"2022-01-01", rate:31, note:"Effective from 01.01.2022"},
+  {from:"2022-07-01", rate:34, note:"Effective from 01.07.2022"},
+  {from:"2023-01-01", rate:42, note:"Effective from 01.01.2023"},
+  {from:"2023-07-01", rate:46, note:"Effective from 01.07.2023"},
+  {from:"2024-01-01", rate:50, note:"Effective from 01.01.2024"},
+  {from:"2024-07-01", rate:53, note:"Effective from 01.07.2024"},
+  {from:"2025-01-01", rate:55, note:"Effective from 01.01.2025"},
+  {from:"2025-07-01", rate:58, note:"Effective from 01.07.2025"},
+  {from:"2026-01-01", rate:60, note:"Effective from 01.01.2026"}
+];
+
+const money = n => "₹" + Math.round(n || 0).toLocaleString("en-IN");
+const dateObj = s => new Date(s + "T00:00:00");
+
+function populateCellDropdown(levelId, cellId, selectedIndex=0){
+  const level=document.getElementById(levelId).value;
+  const cell=document.getElementById(cellId);
+  const cells=payMatrix[level] || [];
+  if(!cells.length){
+    cell.innerHTML='<option value="">No cells available</option>';
+    return;
+  }
+  cell.innerHTML='<option value="">Select Cell / SL</option>' +
+    cells.map((v,i)=>`<option value="${v}" data-cell-index="${i}">SL ${i+1} — ${money(v)}</option>`).join("");
+  if(selectedIndex >= 0 && selectedIndex < cells.length) cell.value=String(selectedIndex);
+}
+
+function syncOldCell(preferredIndex){
+  const levelEl = document.getElementById("oldLevel");
+  const cellEl = document.getElementById("oldCell");
+  const basicEl = document.getElementById("basicPay");
+  const level = levelEl.value;
+  const cells = payMatrix[level] || [];
+
+  cellEl.innerHTML = "";
+  basicEl.value = "";
+  basicEl.placeholder = "Select Old Cell / SL";
+
+  if (!cells.length){
+    cellEl.disabled = true;
+    cellEl.innerHTML = '<option value="">No cells available</option>';
+    return;
+  }
+
+  cellEl.disabled = false;
+  cellEl.innerHTML = '<option value="">Select Cell / SL</option>' +
+    cells.map((v,i)=>`<option value="${v}" data-cell-index="${i}">SL ${i+1} — ${money(v)}</option>`).join("");
+
+  const keep = Number.isInteger(preferredIndex) ? preferredIndex : 0;
+  if (keep >= 0 && keep < cells.length) cellEl.value = String(keep);
+  updateBasicFromOldCell();
+}
+
+function updateBasicFromOldCell(){
+  const cellEl = document.getElementById("oldCell");
+  const basicEl = document.getElementById("basicPay");
+  const amount = Number(cellEl.value);
+
+  if (!cellEl.value || !Number.isFinite(amount)){
+    basicEl.value = "";
+    basicEl.placeholder = "Select Old Cell / SL";
+    return;
+  }
+
+  // Basic Pay is taken directly from the selected Cell amount.
+  // This avoids any index/cache mismatch on iPhone/Safari.
+  basicEl.value = amount;
+  basicEl.placeholder = "";
+}
+
+function populateLevels(){
+  const levels = Array.from({length:31}, (_,i)=>`S-${i+1}`);
+  const oldEl = document.getElementById("oldLevel");
+  const newEl = document.getElementById("newLevel");
+  oldEl.innerHTML = levels.map(x=>`<option value="${x}">${x}</option>`).join("");
+  newEl.innerHTML = levels.map(x=>`<option value="${x}">${x}</option>`).join("");
+  oldEl.value = "S-6";
+  newEl.value = "S-7";
+  syncOldCell(3);
+}
+
+function initApp(){
+  const oldLevel = document.getElementById("oldLevel");
+  const oldCell = document.getElementById("oldCell");
+
+  // Rebuild Cells whenever Old Pay Level changes.
+  oldLevel.addEventListener("change", function(){
+    syncOldCell(0);
+    updateNewBasicPreview();
+  });
+
+  // Read the exact amount from the selected Cell.
+  oldCell.addEventListener("change", function(){
+    updateBasicFromOldCell();
+    updateNewBasicPreview();
+  });
+
+  document.getElementById("newLevel").addEventListener("change", updateNewBasicPreview);
+
+  populateLevels();
+  renderDA();
+  updateBasicFromOldCell();
+  updateNewBasicPreview();
+}
+
+
+function updateNewBasicPreview(){
+  const oldLevel=document.getElementById("oldLevel").value;
+  const newLevel=document.getElementById("newLevel").value;
+  const oldCell=document.getElementById("oldCell");
+  const preview=document.getElementById("newBasicPreview");
+  if(!oldCell || !oldCell.value){ preview.value=""; return; }
+  const oldBasic=Number(oldCell.value);
+  const oneInc=incrementedBasic(oldLevel,oldBasic);
+  preview.value=nextCell(newLevel,oneInc);
+}
+
+
+function renderDA(){
+  document.getElementById("daMasterBody").innerHTML = daMaster.map((x,i)=>`
+    <tr>
+      <td>${x.from}</td>
+      <td><b>${x.rate}%</b></td>
+      <td style="text-align:left">${x.note}</td>
+    </tr>`).join("");
+}
+
+function getDARate(date){
+  const d = dateObj(date);
+  const applicable = daMaster
+    .filter(x => dateObj(x.from) <= d)
+    .sort((a,b)=>dateObj(a.from)-dateObj(b.from));
+  return applicable.length ? Number(applicable[applicable.length-1].rate) : 0;
+}
+
+function nextCell(level, basic){
+  const cells=payMatrix[level] || [];
+  for(const c of cells) if(c>=basic) return c;
+  return cells.length ? cells[cells.length-1] : basic;
+}
+
+function incrementedBasic(level,basic){
+  const cells=payMatrix[level] || [];
+  const i=cells.findIndex(c=>c>=basic);
+  if(i<0) return basic;
+  return cells[Math.min(i+1,cells.length-1)];
+}
+
+function dueBasicForMonth(level, startingBasic, monthIndex, effectiveDate){
+  let basic=startingBasic;
+  const start=dateObj(effectiveDate);
+  const incMonth=Number(document.getElementById("incrementMonth").value);
+  for(let i=1;i<=monthIndex;i++){
+    const current=new Date(start.getFullYear(),start.getMonth()+i,1);
+    if(current.getMonth()+1===incMonth) basic=incrementedBasic(level,basic);
+  }
+  return basic;
+}
+
+function drawnBasicForMonth(oldLevel, startingBasic, monthIndex, effectiveDate){
+  // Drawn pay remains in the old level during the arrear period, with normal annual increments.
+  return dueBasicForMonth(oldLevel, startingBasic, monthIndex, effectiveDate);
+}
+
+function monthRange(startDate,endDate){
+  const out=[];
+  let d=new Date(startDate.getFullYear(),startDate.getMonth(),1);
+  const e=new Date(endDate.getFullYear(),endDate.getMonth(),1);
+  while(d<=e){
+    out.push(new Date(d));
+    d.setMonth(d.getMonth()+1);
+  }
+  return out;
+}
+
+function calculate(){
+  const name=document.getElementById("employeeName").value || "Employee";
+  const effective=document.getElementById("effectiveDate").value;
+  const implementation=document.getElementById("implementationDate").value;
+  const oldLevel=document.getElementById("oldLevel").value;
+  const newLevel=document.getElementById("newLevel").value;
+  const cellEl=document.getElementById("oldCell");
+  if(cellEl.value === ""){ alert("Please select Old Basic Cell / SL."); return; }
+  const selectedOldCell=cellEl.selectedIndex - 1;
+  const oldCells=payMatrix[oldLevel] || [];
+  const startingBasic=Number(cellEl.value)||0;
+  const ta=Number(document.getElementById("ta").value)||0;
+  const hraPct=Number(document.getElementById("hraRate").value)||0;
+
+  if(!effective || !implementation){
+    alert("Please enter Benefit Effective Date and Benefit Implementation / Drawn Date.");
+    return;
+  }
+  const s=dateObj(effective), e=dateObj(implementation);
+  if(e<s){alert("Implementation date cannot be earlier than effective date.");return;}
+
+  // For the difference period, include months from effective month through month before implementation month.
+  const end=new Date(e.getFullYear(),e.getMonth(),1);
+  end.setMonth(end.getMonth()-1);
+  const months=monthRange(new Date(s.getFullYear(),s.getMonth(),1),end);
+
+  let totals={basic:0,da:0,hra:0,ta:0,total:0};
+  const rows=[];
+
+  months.forEach((m,i)=>{
+    const yyyy=m.getFullYear(), mm=String(m.getMonth()+1).padStart(2,"0");
+    const key=`${yyyy}-${mm}-01`;
+    const oldLevelOneIncrement = incrementedBasic(oldLevel, startingBasic);
+    const dueStartingBasic = nextCell(newLevel, oldLevelOneIncrement);
+    const dueBasic=dueBasicForMonth(newLevel, dueStartingBasic, i, effective);
+    const drawnBasic=drawnBasicForMonth(oldLevel, startingBasic, i, effective);
+    const da=getDARate(key);
+    const dueDA=dueBasic*da/100, drawnDA=drawnBasic*da/100;
+    const dueHRA=dueBasic*hraPct/100, drawnHRA=drawnBasic*hraPct/100;
+    const dueTotal=dueBasic+dueDA+dueHRA+ta;
+    const drawnTotal=drawnBasic+drawnDA+drawnHRA+ta;
+    const db=dueBasic-drawnBasic, dda=dueDA-drawnDA, dh=dueHRA-drawnHRA, dt=ta-ta, dtotal=dueTotal-drawnTotal;
+    totals.basic+=db; totals.da+=dda; totals.hra+=dh; totals.ta+=dt; totals.total+=dtotal;
+
+    rows.push({m,da,dueBasic,dueDA,dueHRA,dueTotal,drawnBasic,drawnDA,drawnHRA,drawnTotal,db,dda,dh,dt,dtotal});
+  });
+
+  document.getElementById("periodLabel").textContent =
+    rows.length ? `${rows[0].m.toLocaleString("en-IN",{month:"short",year:"numeric"})} → ${rows[rows.length-1].m.toLocaleString("en-IN",{month:"short",year:"numeric"})}` : "No difference period";
+
+  document.getElementById("resultBody").innerHTML = rows.length ? rows.map(r=>`
+    <tr>
+      <td>${r.m.toLocaleString("en-IN",{month:"short",year:"numeric"})}<br><small>DA ${r.da}%</small></td>
+      <td>${money(r.dueBasic)}</td><td>${money(r.dueDA)}</td><td>${money(r.dueHRA)}</td><td>${money(ta)}</td><td><b>${money(r.dueTotal)}</b></td>
+      <td>${money(r.drawnBasic)}</td><td>${money(r.drawnDA)}</td><td>${money(r.drawnHRA)}</td><td>${money(ta)}</td><td><b>${money(r.drawnTotal)}</b></td>
+      <td>${money(r.db)}</td><td>${money(r.dda)}</td><td>${money(r.dh)}</td><td>${money(r.dt)}</td><td><b>${money(r.dtotal)}</b></td>
+    </tr>`).join("") + `
+    <tr class="total">
+      <td>TOTAL</td>
+      <td colspan="5">—</td><td colspan="5">—</td>
+      <td>${money(totals.basic)}</td><td>${money(totals.da)}</td><td>${money(totals.hra)}</td><td>${money(totals.ta)}</td><td>${money(totals.total)}</td>
+    </tr>` :
+    `<tr><td colspan="16" style="text-align:center;padding:25px">No months fall in the difference period.</td></tr>`;
+
+  document.getElementById("sumBasic").textContent=money(totals.basic);
+  document.getElementById("sumDA").textContent=money(totals.da);
+  document.getElementById("sumHRA").textContent=money(totals.hra);
+  document.getElementById("sumTA").textContent=money(totals.ta);
+  document.getElementById("sumTotal").textContent=money(totals.total);
+
+  document.title=`Pay Difference - ${name}`;
+}
+
+function resetForm(){location.reload();}
+
+window.addEventListener("load", initApp);
+</script>
+</body>
+</html>
